@@ -82,7 +82,7 @@ def read_country_tables(country):
         if party["party_id"] == "":
             party["is_deleted"] = True
         del party["party_id"]
-    parties = sheet_reader(SHEET_ID, f"Table party!C2:C{get_end_range(ST_RANGES['party'])}", as_list=True)
+    parties[country] = sheet_reader(SHEET_ID, f"Table party!C2:C{get_end_range(ST_RANGES['party'])}", as_list=True)
 
     # CONTEST
     contest_data[country] = sheet_reader(SHEET_ID, f"Table contest!{ST_RANGES['contest']}")
@@ -92,7 +92,8 @@ def read_country_tables(country):
         if contest["contest_id"] == "":
             contest["is_deleted"] = True
         del contest["contest_id"]
-    contest_chambers = sheet_reader(SHEET_ID, f"Table contest!C2:C{get_end_range(ST_RANGES['contest'])}",
+
+    contest_chambers[country] = sheet_reader(SHEET_ID, f"Table contest!C2:G{get_end_range(ST_RANGES['contest'])}",
                                     as_list=True)
     # PROFESSION
     profession_range = f"Catalogue profession!{ST_RANGES['profession']}"
@@ -125,5 +126,6 @@ contest_chambers= {}
 url_types = {}
 
 read_country_tables("mx");
-read_country_tables("co");
 read_country_tables("ar");
+read_country_tables("co");
+

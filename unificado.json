@@ -2,7 +2,7 @@
     "country:": "Unificado",
     "sheets": {
         "mx": {
-            "SHEET_ID": "1ObRLk3oXG4Q47HiHwx0dGTMssRZ6wCO5ZABee5t60qs",
+            "SHEET_ID": "1gvdXYgsmkQ5jckBTraHc3iULIXzI1FlmTBqwe1t08BA",
             "ST_RANGES": {
                 "area": "A1:I1190", 
                 "chamber": "A1:C1190",
@@ -17,42 +17,43 @@
             }
         },
         "co": {
-            "SHEET_ID": "1ObRLk3oXG4Q47HiHwx0dGTMssRZ6wCO5ZABee5t60qs",
+            "SHEET_ID": "1W8F9cf88hRXPEeLQEVbXHtQ2K6BnoXRD9vRDWL3Qpeg",
             "x_SHEET_ID_2022": "1H9I_fhpQWMPn5wgRvdBrnmoZ9WpgTIwJnKfda6LEycY",
-            "ST_RANGES": {
-                "area": "A1:I1190", 
-                "chamber": "A1:C1190",
-                "role": "A1:F1190",
-                "contest": "A1:G1190",
-                "coalition": "A1:D128",
-                "party": "A1:F93",
-                "profession": "A1:B122",
-                "url_types": "B2:B23",
-                "COALITION_URL_RANGE": "URL_logo_partido_coal!A1:H37",
-                "PARTY_URL_RANGE": "URL_logo_partido_coal!I1:R62"
-            }
+             "ST_RANGES": {
+               "area": "A1:H111",
+               "chamber": "A1:C111",
+               "role": "A1:F111",
+               "contest": "A1:G111",
+               "coalition": "A1:D68",
+               "party": "A1:F303",
+               "profession": "A1:B119",
+               "url_types": "B2:B23",
+               "COALITION_URL_RANGE": "URL_logo_partido_coal!A1:H86",
+               "PARTY_URL_RANGE": "URL_logo_partido_coal!J1:S289"
+             }
         }
         ,
         "ar": {
-            "SHEET_ID": "1ObRLk3oXG4Q47HiHwx0dGTMssRZ6wCO5ZABee5t60qs",
+            "SHEET_ID": "1TvKbHLz6AJPUlEHP9WD_w7_mqQQv8pN4Y9Z7ZF0cq1I",
             "x_SHEET_ID_2022": "1H9I_fhpQWMPn5wgRvdBrnmoZ9WpgTIwJnKfda6LEycY",
             "ST_RANGES": {
-                "area": "A1:I1190", 
-                "chamber": "A1:C1190",
-                "role": "A1:F1190",
-                "contest": "A1:G1190",
-                "coalition": "A1:D128",
-                "party": "A1:F93",
-                "profession": "A1:B122",
-                "url_types": "B2:B23",
-                "COALITION_URL_RANGE": "URL_logo_partido_coal!A1:H37",
-                "PARTY_URL_RANGE": "URL_logo_partido_coal!I1:R62"
+              "area": "A1:H109",
+              "chamber": "A1:C109",
+              "role": "A1:F109",
+              "coalition": "A1:D7",
+              "party": "A1:F209",
+              "profession": "A1:B86",
+              "contest": "A1:G109",
+              "url_types": "B2:B23",
+              "COALITION_URL_RANGE": "URL_logo_partido_coal!A1:H1",
+              "PARTY_URL_RANGE": "URL_logo_partido_coal!I1:R93"
             }
         }      
-    },
-    "CAPTURE_SHEET_ID": "162Mg4SbflawNKcu4df4Bik5FBksoyQh0MS73e13ka-k",
-    "READ_RANGE": "Captura!A1:AI15000",
+     },
+    "CAPTURE_SHEET_ID": "1wmZ0PfnjNWwG5J6iWrUg7RXAgFPF_K0fmbpGC1y4p60",
+    "READ_RANGE": "Unificado!A1:AL15000",
     "person_header": [
+        "country",
         "person_id",
         "full_name",
         "first_name",
@@ -62,5 +63,31 @@
         "dead_or_alive",
         "last_degree_of_studies",
         "contest_id"
-    ]
+    ],
+    "location_template":{
+        "mx": {
+            "governmentOfficer": "{state}",
+            "legislatorLowerBody": "distrito federal {area} de {state}",
+            "legislatorUpperBody": "senaduría de {state}",
+            "regionalLegislator": "distrito local {area} {state}",
+            "executiveCouncil": "{area}"
+        },
+        "ar": {
+            "governmentOfficer": "gobernador/a de {state}",
+            "executiveCouncil": "intendente/a de {area} pcia de {state}",
+            "legislatorLowerBody": "diputado/a por {state}",
+            "legislatorUpperBody": "senador/a nacional por {state}",
+            "headOfGovernment": "presidencia de {state}",
+            "deputyHeadOfGovernment": "vicepresidencia de {state}",
+            "viceGovernmentOfficer": "vicegobernatura de {state}"
+        },
+        "co": {
+            "headOfState": "presidencia de colombia",
+            "headOfState": "vicepresidencia de colombia",
+            "governmentOfficer": "{state}",
+            "executiveCouncil": "{area}",
+            "legislatorLowerBody": "representante a la cámara por el departamento de {state}",
+            "legislatorUpperBody": "senador de la república {state}"
+        }
+    }
 }

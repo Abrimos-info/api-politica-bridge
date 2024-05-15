@@ -16,24 +16,32 @@ import json
 if (len(sys.argv[1]) < 1 or len(sys.argv[2]) < 1 ):
     exit("Missing command line parameters DB_TYPE and COUNTRY_FILE")
 
-COUNTRY_FILE = sys.argv[2];
+CONFIG_FILE = sys.argv[2];
 
-with open(COUNTRY_FILE, 'r') as f:
-    COUNTRY = json.load(f)
+with open(CONFIG_FILE, 'r') as f:
+    CONFIG = json.load(f)
 
-CAPTURE_SHEET_ID = COUNTRY["CAPTURE_SHEET_ID"]
+CAPTURE_SHEET_ID = CONFIG["CAPTURE_SHEET_ID"]
  # Capture Read Ranges
-READ_RANGE = COUNTRY["READ_RANGE"]
-COALITION_URL_RANGE = COUNTRY["COALITION_URL_RANGE"]
-PARTY_URL_RANGE = COUNTRY["PARTY_URL_RANGE"]
-
+READ_RANGE = CONFIG["READ_RANGE"]
 CSV_DB_PATH = 'csv_db'
 API_BASE = 'http://localhost:5000/'
 # API endpoints
 ENDPOINTS = ["area", "chamber", "role", "coalition", "party", "person",
-             "other-name", "profession", "membership", "contest", "url"]
+            "other-name", "profession", "membership", "contest", "url"]
 DB_TYPE = sys.argv[1]
 
+def read_country_tables(country):
+    
+    COALITION_URL_RANGE = CONFIG["sheets"][country]["ST_RANGES"]["COALITION_URL_RANGE"]
+    PARTY_URL_RANGE = CONFIG["sheets"][country]["ST_RANGES"]["PARTY_URL_RANGE"]
+
+    # Getting parties and coalition URLs
+    party_url[country] = sheet_reader(CAPTURE_SHEET_ID, PARTY_URL_RANGE)
+    coalition_url[country] = sheet_reader(CAPTURE_SHEET_ID, COALITION_URL_RANGE)
+
+party_url = {}
+coalition_url = {}
 
 def main():
     """**Entry function to the pipeline**
@@ -44,6 +52,11 @@ def main():
     :return: None
     """
     make_banner("(1/3) VERIFICATIONS")
+
+    # read_country_tables("mx");
+    # read_country_tables("co");
+    # read_country_tables("ar");
+
     # Getting sheet data as list of list
     dataset = sheet_reader(CAPTURE_SHEET_ID, READ_RANGE)
     # Getting header
@@ -75,9 +88,10 @@ def main():
     make_banner("(2/3) BUILD DYNAMIC DATA")
 
     # PERSON
-    person_header = COUNTRY["person_header"]
+    person_header = CONFIG["person_header"]
+    location_template = CONFIG["location_template"]
     # This list is ready to be send to the API
-    person_data = make_person_struct(dataset, contest_chambers, person_header)
+    person_data = make_person_struct(dataset, contest_chambers, person_header, location_template)
     # Making a table for double check
     person_table = make_table(person_header, person_data)
     write_csv(person_table, f"{CSV_DB_PATH}/person")
@@ -86,7 +100,7 @@ def main():
 
     # OTHER-NAME
     other_name_header = ["other_name_id", "other_name_type", "name",
-                         "person_id"]
+                        "person_id"]
     # This list is ready to be send to the API
     other_names_data = make_other_names_struct(dataset)
     # Making a table for double check
@@ -101,21 +115,21 @@ def main():
     person_profession_data = make_person_profession(dataset,
                                                     professions_catalogue)
     person_profession_table = make_table(person_profession_header,
-                                         person_profession_data)
+                                        person_profession_data)
     write_csv(person_profession_table, f"{CSV_DB_PATH}/person-profession")
     for person_profession in person_profession_data:
         del person_profession["person_profession_id"]
 
     # MEMBERSHIP
     membership_header = ["membership_id", "person_id", "role_id", "party_id",
-                         "coalition_id", "contest_id",
-                         "goes_for_coalition", "membership_type",
-                         "goes_for_reelection",
-                         "start_date", "end_date", "is_substitute",
-                         "parent_membership_id", "changed_from_substitute",
-                         "date_changed_from_substitute"]
+                        "coalition_id", "contest_id",
+                        "goes_for_coalition", "membership_type",
+                        "goes_for_reelection",
+                        "start_date", "end_date", "is_substitute",
+                        "parent_membership_id", "changed_from_substitute",
+                        "date_changed_from_substitute"]
     membership_data = make_membership(dataset, parties, coalitions_catalogue,
-                                      contest_chambers, membership_header, role_data)
+                                    contest_chambers, membership_header, role_data)
     membership_table = make_table(membership_header, membership_data)
     write_csv(membership_table, f"{CSV_DB_PATH}/membership")
     for membership in membership_data:
@@ -123,13 +137,10 @@ def main():
 
     # URL
     url_header = ["url_id", "url", "description", "url_type", "owner_type",
-                  "owner_id"]
+                "owner_id"]
     url_id_counter = 0
     url_data, url_id_counter = make_url_struct(dataset, url_types,
-                                               url_id_counter)
-    # Getting parties and coalition URLs
-    party_url = sheet_reader(CAPTURE_SHEET_ID, PARTY_URL_RANGE)
-    coalition_url = sheet_reader(CAPTURE_SHEET_ID, COALITION_URL_RANGE)
+                                            url_id_counter)
 
     url_party, url_id_counter = make_url_struct(party_url, url_types,
                                                 url_id_counter, coalition_data,
@@ -185,6 +196,6 @@ def main():
     send_data(API_BASE, 'url', url_data)
     make_banner("Finish. Have a nice day :)")
 
-
 if __name__ == "__main__":
     main()
+    

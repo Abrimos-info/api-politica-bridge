@@ -215,7 +215,42 @@ def make_table(header, dataset):
     return table
 
 
-def get_contest_id(data, contest_chambers):
+def get_contest_id(data, contest_chambers, country_location_template):
+    location_template = country_location_template[data["role_type"]]
+    location = location_template.format(
+        state = data["state"].lower(), 
+        area = data["area"].lower()
+    )
+
+    if data["role_type"] == "legislatorLowerBody":
+        # location = f"distrito federal {data['area']} de {data['state'].lower()}"
+        #location = f"diputado/a por {data['state'].lower()}"
+        if data['state'].lower() == "bogotá":
+            location = f"representante a la cámara por bogotá"
+        else:
+            location = f"representante a la cámara por el departamento de {data['state'].lower()}"
+    # Senador (4)
+    elif data["role_type"] == "legislatorUpperBody":
+        # location = data["state"].lower()
+        if data['state'].lower() == "colombia":
+            location = f"senador de la república de colombia"
+        else:
+            location = f"senador de la república {data['state'].lower()}"
+
+    location = data['contest'].lower()
+
+    for i, contest_chamber in enumerate(contest_chambers, start=1):
+        #if location in contest_chamber and Catalogues.SPANISH_ROLES[data["role_type"]] in contest_chamber:
+        if location == contest_chamber:
+            return i
+
+    print("get_contest_id: " + "person_id: " + str(data["person_id"]) + " role_type: " + str(data["role_type"]) + " location: " + str(location))
+    #print("role_type_es: " + str(Catalogues.SPANISH_ROLES[data["role_type"]]))
+    #print("contest_chamber: " + str(contest_chambers))
+    return -1
+
+
+def get_contest_id_old(data, contest_chambers):
     """**Gets the contest id based on Catalogues**
 
     :return: The contest id if any, else
@@ -243,11 +278,12 @@ def get_contest_id(data, contest_chambers):
         location = f"distrito local {data['area']} {data['state'].lower()}"
         #print("diputacion local: " + Catalogues.SPANISH_ROLES[data["role_type"]])
 
-    elif data["role_type"] == "executiveCouncil":
-        location = f"presidencia del municipio de {data['area'].lower()}"
+    elif data["role_type"] == "regionalLegislator":
+        location = f"distrito local {data['area']} {data['state'].lower()}"
         #print("diputacion local: " + Catalogues.SPANISH_ROLES[data["role_type"]])
 
     location = data['contest'].lower()
+
     for i, contest_chamber in enumerate(contest_chambers, start=1):
         #if location in contest_chamber and Catalogues.SPANISH_ROLES[data["role_type"]] in contest_chamber:
         if location == contest_chamber:
@@ -273,7 +309,7 @@ def get_role_id(roles, contest_id):
     print("get_role_id: Role not found. We reached role " + role["id"] + " searching for a role with contest_id " + str(contest_id))
     return -1
 
-def make_person_struct(dataset, contest_chambers, header):
+def make_person_struct(dataset, contest_chambers, header, location_template):
     """**Function that makes person data**
 
     This function build a list of dicts with valid person data for the API
@@ -291,6 +327,9 @@ def make_person_struct(dataset, contest_chambers, header):
     for data in dataset:
         row = dict()
         row["is_deleted"] = data["is_deleted"]
+
+        if (data["country"].find("()") > 0):
+            continue
         for field in header:
             if field == "gender":
                 row[field] = 2 if data[field] == "F" else 1
@@ -299,11 +338,11 @@ def make_person_struct(dataset, contest_chambers, header):
             elif field == "last_degree_of_studies":
                 if data[field]:
                     last_degree = data[field].upper()
-                    row[field] = Catalogues.DEGREES_OF_STUDIES.index(last_degree)
+                    row[field] = Catalogues.DEGREES_OF_STUDIES.index(last_degree.replace('´', '’').replace("'", '’'))
                 else:
                     row[field] = -1
             elif field == "contest_id":
-                row[field] = get_contest_id(data, contest_chambers)
+                row[field] = get_contest_id(data, contest_chambers[row["country"]], location_template[row["country"]])
             elif field == "date_birth":
                 if data[field]:
                     row[field] = data[field]
