@@ -2,6 +2,7 @@ import os
 import re
 import requests
 import json
+import sys
 from datetime import date
 from progressbar import ProgressBar
 from requests import exceptions as r_excepts
@@ -119,6 +120,8 @@ def verification_process(dataset, header):
     :rtype: list
     """
     lines = []
+    # print(dataset);
+    # sys.exit()
     # Loop to read every row
     with ProgressBar(max_value=len(dataset)) as bar:
         for i, row in enumerate(dataset, start=1):
@@ -216,7 +219,8 @@ def make_table(header, dataset):
 
 
 def get_contest_id(data, contest_chambers, country_location_template):
-    location_template = country_location_template[data["role_type"]]
+    # print("get_contest_id",country_location_template)
+    location_template = country_location_template[data["role_type"].strip()]
     location = location_template.format(
         state = data["state"].lower(), 
         area = data["area"].lower()
@@ -306,7 +310,7 @@ def get_role_id(roles, contest_id):
             #print("Role SI " + role["contest_id"] + " vs " + str(contest_id) + ": " + str(i))
             return i
 
-    print("get_role_id: Role not found. We reached role " + role["id"] + " searching for a role with contest_id " + str(contest_id))
+    print("get_role_id: Role not found. We reached role " + role["contest_id"] + " searching for a role with contest_id " + str(contest_id))
     return -1
 
 def make_person_struct(dataset, contest_chambers, header, location_template):
@@ -417,11 +421,11 @@ def make_person_profession(dataset, professions):
                             "profession_id": profession_id
                         })
                     except Exception:
-                        print("make_person_profession error", i, "profession not found", profession, professions)
+                        print("make_person_profession error", i, "profession not found", profession)
     return lines
 
 
-def make_membership(dataset, parties, coalitions, contest_chambers, header, roles):
+def make_membership(dataset, parties_dict, coalitions_dict, contest_chambers_dict, header, roles_dict, location_template_dict):
     """**Makes membership data**
 
     This functions makes a valid list of membership data for the API
@@ -441,6 +445,16 @@ def make_membership(dataset, parties, coalitions, contest_chambers, header, role
     """
     lines = []
     for i, data in enumerate(dataset, start=1):
+        if (data["country"].find("()") > 0):
+            continue
+        # print(data["country"],coalitions)
+
+        coalitions = coalitions_dict.get(data["country"])
+        contest_chambers = contest_chambers_dict.get(data["country"])
+        location_template = location_template_dict.get(data["country"])
+        parties = parties_dict.get(data["country"])
+        roles = roles_dict.get(data["country"])
+
         try:
             if data["coalition"]:
                 coalition_id = coalitions.index(data["coalition"].lower().strip()) + 1
@@ -450,7 +464,7 @@ def make_membership(dataset, parties, coalitions, contest_chambers, header, role
             print("make_membership coalitions error in line", i, "'",data["coalition"].lower().strip(), "'","not found")
 
         try:
-            contest_id = get_contest_id(data, contest_chambers)
+            contest_id = get_contest_id(data, contest_chambers, location_template)
             role_id = get_role_id(roles, contest_id)
             lines.append({
                 "is_deleted": data["is_deleted"],
@@ -568,7 +582,7 @@ def make_url_struct(dataset, url_types, url_id_counter, coalitions=[],
                             lines.append({
                                 "url_id": url_id,
                                 "url": data[field],
-                                "url_type": get_url_type_id(field, url_types),
+                                "url_type": get_url_type_id(field, url_types[data["country"]]),
                                 "description": "",
                                 "owner_type": 3 if owner_type == "coalition" else 2,
                                 "owner_id": owner_id
@@ -585,7 +599,7 @@ def make_url_struct(dataset, url_types, url_id_counter, coalitions=[],
                                     "url_id": url_id,
                                     "is_deleted": data["is_deleted"],
                                     "url": url.strip(),
-                                    "url_type": get_url_type_id(field, url_types),
+                                    "url_type": get_url_type_id(field, url_types[data["country"]]),
                                     "description": '',  # TODO
                                     "owner_type": 4 if field == "source_of_truth" else 1,  # TODO: persona, partido, coalicion
                                     "owner_id": data["person_id"]
@@ -600,7 +614,7 @@ def make_url_struct(dataset, url_types, url_id_counter, coalitions=[],
                                 "url_id": url_id,
                                 "is_deleted": data["is_deleted"],
                                 "url": clean_url,
-                                "url_type": get_url_type_id(field, url_types, clean_url),
+                                "url_type": get_url_type_id(field, url_types[data["country"]], clean_url),
                                 "description": '',  # TODO
                                 "owner_type": 1,  # TODO: persona, partido, coalicion
                                 "owner_id": data["person_id"]

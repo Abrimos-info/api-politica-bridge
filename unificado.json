@@ -4,7 +4,7 @@
         "mx": {
             "SHEET_ID": "1gvdXYgsmkQ5jckBTraHc3iULIXzI1FlmTBqwe1t08BA",
             "ST_RANGES": {
-                "area": "A1:I1190", 
+                "area": "A1:J1190", 
                 "chamber": "A1:C1190",
                 "role": "A1:F1190",
                 "contest": "A1:G1190",
@@ -20,7 +20,7 @@
             "SHEET_ID": "1W8F9cf88hRXPEeLQEVbXHtQ2K6BnoXRD9vRDWL3Qpeg",
             "x_SHEET_ID_2022": "1H9I_fhpQWMPn5wgRvdBrnmoZ9WpgTIwJnKfda6LEycY",
              "ST_RANGES": {
-               "area": "A1:H111",
+               "area": "A1:J111",
                "chamber": "A1:C111",
                "role": "A1:F111",
                "contest": "A1:G111",
@@ -37,7 +37,7 @@
             "SHEET_ID": "1TvKbHLz6AJPUlEHP9WD_w7_mqQQv8pN4Y9Z7ZF0cq1I",
             "x_SHEET_ID_2022": "1H9I_fhpQWMPn5wgRvdBrnmoZ9WpgTIwJnKfda6LEycY",
             "ST_RANGES": {
-              "area": "A1:H109",
+              "area": "A1:J109",
               "chamber": "A1:C109",
               "role": "A1:F109",
               "coalition": "A1:D7",
@@ -62,7 +62,8 @@
         "gender",
         "dead_or_alive",
         "last_degree_of_studies",
-        "contest_id"
+        "contest_id",
+        "profession_1"
     ],
     "location_template":{
         "mx": {
@@ -70,7 +71,8 @@
             "legislatorLowerBody": "distrito federal {area} de {state}",
             "legislatorUpperBody": "senaduría de {state}",
             "regionalLegislator": "distrito local {area} {state}",
-            "executiveCouncil": "{area}"
+            "executiveCouncil": "{area}",
+            "headOfGovernment": "presidencia de {state}"
         },
         "ar": {
             "governmentOfficer": "gobernador/a de {state}",
@@ -79,7 +81,8 @@
             "legislatorUpperBody": "senador/a nacional por {state}",
             "headOfGovernment": "presidencia de {state}",
             "deputyHeadOfGovernment": "vicepresidencia de {state}",
-            "viceGovernmentOfficer": "vicegobernatura de {state}"
+            "viceGovernmentOfficer": "vicegobernatura de {state}",
+            "GovernmentOfficer": "gobernador/a de {state}"
         },
         "co": {
             "headOfState": "presidencia de colombia",
@@ -87,7 +90,10 @@
             "governmentOfficer": "{state}",
             "executiveCouncil": "{area}",
             "legislatorLowerBody": "representante a la cámara por el departamento de {state}",
-            "legislatorUpperBody": "senador de la república {state}"
+            "legislatorUpperBody": "senador de la república {state}",
+            "headOfGovernment": "presidencia de colombia",
+            "viceDeputyHeadOfGovernment": "vicepresidencia de colombia",
+            "deputyHeadOfGovernment": "vicepresidencia de colombia"
         }
     }
 }
