@@ -21,11 +21,11 @@ jobs:
     steps:
     - uses: actions/checkout@v4
       with:
-        path: api-politica-bridge
+        path: bridge
     - uses: actions/checkout@v4
       with:
         repository: socialtic/api-politica
-        path: api-politica
+        path: api
         ref: mexico      
     - name: Set up Python 3.10
       uses: actions/setup-python@v3
@@ -33,14 +33,14 @@ jobs:
         python-version: "3.10"
     - name: Install dependencies
       run: |
-        cd api-politica
+        cd bridge
         python -m pip install --upgrade pip
         echo "pip"
         pip install -r requirements.txt
     - name: Start api-politica
       run: |
         # stop the build if there are Python syntax errors or undefined names
-        cd api-politica
+        cd api
         echo "pip"
         pip install -r requirements.txt
         python db_create 1 && python application.py &
@@ -48,7 +48,7 @@ jobs:
         cd ..
     - name: Correr unificada
       run: |
-        cd api-politica-bridge
+        cd bridge
         python pipeline.py local unificado.json
     - name: Exportar datos
       run: |
