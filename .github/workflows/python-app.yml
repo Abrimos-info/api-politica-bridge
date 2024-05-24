@@ -26,7 +26,7 @@ jobs:
       with:
         repository: abrimos-info/api-politica
         path: api
-        ref: mexico      
+        ref: feature-unificada      
     - name: Set up Python 3.10
       uses: actions/setup-python@v3
       with:
