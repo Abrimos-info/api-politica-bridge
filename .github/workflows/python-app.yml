@@ -46,7 +46,7 @@ jobs:
         cd ..
     - name: Correr unificada
       run: |
-        python pipeline.py local unificado.json
+        python ../pipeline.py local unificado.json
     - name: Exportar datos
       run: |
         curl -H "Authorization: Bearer 1" http://localhost:5000/export-min/ > test.json
