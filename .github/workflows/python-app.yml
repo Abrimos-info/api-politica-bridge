@@ -37,17 +37,16 @@ jobs:
         python -m pip install --upgrade pip
         echo "pip"
         pip install -r requirements.txt
-        echo  '${{ secrets.GCP_CREDENTIALS }}' > credentials.json
+        echo {   \"token_type\": \"Bearer\", \"token_value\": \"1\" } > token.json
     - name: Start api-politica
       run: |
         # stop the build if there are Python syntax errors or undefined names
         cd api
         echo "pip api"
         pip install -r requirements.txt
-        git status
-        ls -la
+        echo  '${{ secrets.GCP_CREDENTIALS }}' > credentials.json
         echo {   \"token_type\": \"Bearer\", \"token_value\": \"1\" } > token.json
-        python db_create 1 && python application.py &
+        python db_create.py 1 && python application.py &
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         cd ..
     - name: Correr unificada
