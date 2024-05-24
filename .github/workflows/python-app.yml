@@ -24,10 +24,9 @@ jobs:
         path: api-politica-bridge
     - uses: actions/checkout@v4
       with:
-        repository: abrimos-info/api-politica
+        repository: socialtic/api-politica
         path: api-politica
         ref: mexico      
-        token: ${{ secrets.GH_PAT }}
     - name: Set up Python 3.10
       uses: actions/setup-python@v3
       with:
