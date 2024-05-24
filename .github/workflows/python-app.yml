@@ -37,6 +37,7 @@ jobs:
         python -m pip install --upgrade pip
         echo "pip"
         pip install -r requirements.txt
+        echo  '${{ secrets.GCP_CREDENTIALS }}' > credentials.json
         echo {   \"token_type\": \"Bearer\", \"token_value\": \"1\" } > token.json
     - name: Start api-politica
       run: |
@@ -44,7 +45,6 @@ jobs:
         cd api
         echo "pip api"
         pip install -r requirements.txt
-        echo  '${{ secrets.GCP_CREDENTIALS }}' > credentials.json
         echo {   \"token_type\": \"Bearer\", \"token_value\": \"1\" } > token.json
         python db_create.py 1 && python application.py &
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
@@ -52,6 +52,7 @@ jobs:
     - name: Correr unificada
       run: |
         cd bridge
+        ls -la
         python pipeline.py local unificado.json
     - name: Exportar datos
       run: |
