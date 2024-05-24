@@ -38,7 +38,6 @@ jobs:
         echo "pip"
         pip install -r requirements.txt
         mkdir csv_db_officeholders
-        mkdir csv_db
         echo  '${{ secrets.GCP_CREDENTIALS }}' > credentials.json
         echo {   \"token_type\": \"Bearer\", \"token_value\": \"1\" } > token.json
     - name: Start api-politica
