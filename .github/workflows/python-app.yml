@@ -24,7 +24,7 @@ jobs:
         path: bridge
     - uses: actions/checkout@v4
       with:
-        repository: socialtic/api-politica
+        repository: abrimos-info/api-politica
         path: api
         ref: mexico      
     - name: Set up Python 3.10
@@ -37,6 +37,8 @@ jobs:
         python -m pip install --upgrade pip
         echo "pip"
         pip install -r requirements.txt
+        mkdir csv_db_officeholders
+        mkdir csv_db
         echo  '${{ secrets.GCP_CREDENTIALS }}' > credentials.json
         echo {   \"token_type\": \"Bearer\", \"token_value\": \"1\" } > token.json
     - name: Start api-politica
