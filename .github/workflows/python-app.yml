@@ -20,6 +20,14 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+      with:
+        path: api-politica-bridge
+    - uses: actions/checkout@v4
+      with:
+        repository: abrimos-info/api-politica
+        path: api-politica
+        ref: mexico      
+        token: ${{ secrets.GH_PAT }}
     - name: Set up Python 3.10
       uses: actions/setup-python@v3
       with:
@@ -32,8 +40,6 @@ jobs:
     - name: Start api-politica
       run: |
         # stop the build if there are Python syntax errors or undefined names
-        git clone https://github.com/abrimos-info/api-politica
-        git checkout mexico
         cd api-politica
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         python db_create 1 && python application.py &
