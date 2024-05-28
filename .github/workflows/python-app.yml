@@ -55,18 +55,18 @@ jobs:
         python pipeline.py local mexico2024.json
     - name: Exportar datos
       run: |
-        curl -H "Authorization: Bearer 1" http://localhost:5000/export-min/ > gob_export_min_mx.json
-        curl -H "Authorization: Bearer 1" http://localhost:5000/person/ > gob_area_mx.json
-        curl -H "Authorization: Bearer 1" http://localhost:5000/person/ > gob_party_mx.json
-        curl -H "Authorization: Bearer 1" http://localhost:5000/person/ > gob_chamber_mx.json
-        curl -H "Authorization: Bearer 1" http://localhost:5000/person/ > gob_contest_mx.json
-        curl -H "Authorization: Bearer 1" http://localhost:5000/person/ > gob_coalition_mx.json
-        curl -H "Authorization: Bearer 1" http://localhost:5000/person/ > gob_membership_mx.json
-        curl -H "Authorization: Bearer 1" http://localhost:5000/person/ > gob_role_mx.json
-        curl -H "Authorization: Bearer 1" http://localhost:5000/person/ > gob_person_mx.json
+        curl -s -H "Authorization: Bearer 1" http://localhost:5000/export-min/ > gob_export_min_mx.json
+        curl -s -H "Authorization: Bearer 1" http://localhost:5000/area/ > gob_area_mx.json
+        curl -s -H "Authorization: Bearer 1" http://localhost:5000/party/ > gob_party_mx.json
+        curl -s -H "Authorization: Bearer 1" http://localhost:5000/chamber/ > gob_chamber_mx.json
+        curl -s -H "Authorization: Bearer 1" http://localhost:5000/contest/ > gob_contest_mx.json
+        curl -s -H "Authorization: Bearer 1" http://localhost:5000/coalition/ > gob_coalition_mx.json
+        curl -s -H "Authorization: Bearer 1" http://localhost:5000/membership/ > gob_membership_mx.json
+        curl -s -H "Authorization: Bearer 1" http://localhost:5000/role/ > gob_role_mx.json
+        curl -s -H "Authorization: Bearer 1" http://localhost:5000/person/ > gob_person_mx.json
 
 
     - uses: actions/upload-artifact@v4
       with:
-        name: gob_mx_json
+        name: gob_mx_json 
         path: gob_*.json
