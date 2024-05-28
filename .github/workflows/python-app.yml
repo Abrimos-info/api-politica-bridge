@@ -1,0 +1,72 @@
+name: Build data mexico
+
+on:
+  push:
+    branches: [ "mexico" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+  
+permissions:
+  contents: read
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        path: bridge
+    - uses: actions/checkout@v4
+      with:
+        repository: abrimos-info/api-politica
+        path: api
+        ref: mexico
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.10"
+    - name: Install dependencies
+      run: |
+        cd bridge
+        python -m pip install --upgrade pip
+        echo "pip"
+        pip install -r requirements.txt
+        mkdir csv_db_officeholders
+        mkdir deleted
+        echo  '${{ secrets.GCP_CREDENTIALS }}' > credentials.json
+        echo {   \"token_type\": \"Bearer\", \"token_value\": \"1\" } > token.json
+    - name: Start api-politica
+      run: |
+        # stop the build if there are Python syntax errors or undefined names
+        cd api
+        echo "pip api"
+        pip install -r requirements.txt
+        echo {   \"token_type\": \"Bearer\", \"token_value\": \"1\" } > token.json
+        python db_create.py 1 && python application.py &
+        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+        cd ..
+    - name: Correr unificada
+      run: |
+        cd bridge
+        ls -la
+        python pipeline.py local mexico2024.json
+    - name: Exportar datos
+      run: |
+        curl -H "Authorization: Bearer 1" http://localhost:5000/export-min/ > gob_export_min_mx.json
+        curl -H "Authorization: Bearer 1" http://localhost:5000/person/ > gob_area_mx.json
+        curl -H "Authorization: Bearer 1" http://localhost:5000/person/ > gob_party_mx.json
+        curl -H "Authorization: Bearer 1" http://localhost:5000/person/ > gob_chamber_mx.json
+        curl -H "Authorization: Bearer 1" http://localhost:5000/person/ > gob_contest_mx.json
+        curl -H "Authorization: Bearer 1" http://localhost:5000/person/ > gob_coalition_mx.json
+        curl -H "Authorization: Bearer 1" http://localhost:5000/person/ > gob_membership_mx.json
+        curl -H "Authorization: Bearer 1" http://localhost:5000/person/ > gob_role_mx.json
+        curl -H "Authorization: Bearer 1" http://localhost:5000/person/ > gob_person_mx.json
+
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: my-artifact
+        path: gob_*.json
