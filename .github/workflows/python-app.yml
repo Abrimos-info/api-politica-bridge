@@ -66,7 +66,6 @@ jobs:
         curl -s -H "Authorization: Bearer 1" http://localhost:5000/person/ > gob_person_mx.json
 
     - name: Get current date
-        id: date
         run: |
           echo "{date}={$(date +'%Y-%m-%d')}" >> $GITHUB_STATE
     - uses: actions/upload-artifact@v4
