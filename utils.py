@@ -695,7 +695,6 @@ def send_data(base_url, endpoint, dataset):
     """
     full_url = base_url + endpoint + '/'
     deleted = []
-    sys.stdout.flush() 
     with ProgressBar(max_value=len(dataset), redirect_stdout=True, min_poll_interval=5) as bar:
         for i, row in enumerate(dataset, start=1):
             try:
