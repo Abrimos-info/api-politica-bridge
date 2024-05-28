@@ -67,17 +67,18 @@ jobs:
 
     - name: Get current date
       run: |
-        echo "{date}={$(date +'%Y-%m-%d')}" >> $GITHUB_STATE
+        echo "DATE={$(date +'%Y-%m-%d')}" >> $GITHUB_OUTPUT
+      id: "date"
     - uses: actions/upload-artifact@v4
       with:
-        name: gob_json-elecciones_mx-${{env.date}} 
+        name: gob_json-elecciones_mx-${{steps.date.outputs.DATE}} 
         path: |
           gob_*.json
           bridge/Documentacion_API_2024.pdf
 
     - uses: actions/upload-artifact@v4
       with:
-        name: gob_csv-elecciones_mx-${{env.date}}
+        name: gob_csv-elecciones_mx-${{steps.date.outputs.DATE}}
         path: |
           ./bridge/csv_db/*.csv
           bridge/Documentacion_API_2024.pdf
