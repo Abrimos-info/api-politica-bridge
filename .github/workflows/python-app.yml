@@ -70,15 +70,15 @@ jobs:
         echo "{date}={$(date +'%Y-%m-%d')}" >> $GITHUB_STATE
     - uses: actions/upload-artifact@v4
       with:
-        name: gob_json-elecciones_mx-${{github.date}} 
+        name: gob_json-elecciones_mx-${{env.date}} 
         path: |
           gob_*.json
           bridge/Documentacion_API_2024.pdf
 
     - uses: actions/upload-artifact@v4
       with:
-        name: gob_csv-elecciones_mx-${{github.date}}
+        name: gob_csv-elecciones_mx-${{env.date}}
         path: |
           ./bridge/csv_db/*.csv
-           bridge/Documentacion_API_2024.pdf
+          bridge/Documentacion_API_2024.pdf
 
