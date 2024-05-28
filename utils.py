@@ -206,7 +206,7 @@ def make_table(header, dataset):
                 try:
                     cell = row_data[field].strip("\r\n ")
                     if cell == "0001-01-01":
-                        print(field,cell)
+                        # print(field,cell)
                         cell = ""
                     if ',' in row_data[field] :
                         table += f'"{cell}",'

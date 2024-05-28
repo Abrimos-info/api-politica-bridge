@@ -51,7 +51,6 @@ jobs:
     - name: Correr unificada
       run: |
         cd bridge
-        ls -la
         python pipeline.py local mexico2024.json
     - name: Exportar datos
       run: |
@@ -64,6 +63,8 @@ jobs:
         curl -s -H "Authorization: Bearer 1" http://localhost:5000/membership/ > gob_membership_mx.json
         curl -s -H "Authorization: Bearer 1" http://localhost:5000/role/ > gob_role_mx.json
         curl -s -H "Authorization: Bearer 1" http://localhost:5000/person/ > gob_person_mx.json
+        ls -la
+        ls -la csv_db
 
 
     - uses: actions/upload-artifact@v4
@@ -74,4 +75,4 @@ jobs:
     - uses: actions/upload-artifact@v4
       with:
         name: gob_mx_csv 
-        path: csv_db/*.csv
+        path: ./bridge/csv_db/*.csv
