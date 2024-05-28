@@ -70,3 +70,8 @@ jobs:
       with:
         name: gob_mx_json 
         path: gob_*.json
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: gob_mx_csv 
+        path: csv_db/*.csv
