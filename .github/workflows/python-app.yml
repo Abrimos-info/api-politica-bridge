@@ -54,6 +54,7 @@ jobs:
         python pipeline.py local mexico2024.json
     - name: Exportar datos
       run: |
+        echo "Export"
         curl -s -H "Authorization: Bearer 1" http://localhost:5000/export-min/ > gob_export_min_mx.json
         curl -s -H "Authorization: Bearer 1" http://localhost:5000/area/ > gob_area_mx.json
         curl -s -H "Authorization: Bearer 1" http://localhost:5000/party/ > gob_party_mx.json
@@ -63,8 +64,6 @@ jobs:
         curl -s -H "Authorization: Bearer 1" http://localhost:5000/membership/ > gob_membership_mx.json
         curl -s -H "Authorization: Bearer 1" http://localhost:5000/role/ > gob_role_mx.json
         curl -s -H "Authorization: Bearer 1" http://localhost:5000/person/ > gob_person_mx.json
-        ls -la
-        ls -la csv_db
 
 
     - uses: actions/upload-artifact@v4
