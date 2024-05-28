@@ -205,8 +205,8 @@ def make_table(header, dataset):
             for field in header:
                 try:
                     cell = row_data[field].strip("\r\n ")
+                    #Remove empty dates
                     if cell == "0001-01-01":
-                        # print(field,cell)
                         cell = ""
                     if ',' in row_data[field] :
                         table += f'"{cell}",'
@@ -297,6 +297,8 @@ def make_person_struct(dataset, contest_chambers, header):
         for field in header:
             if field == "gender":
                 row[field] = 2 if data[field] == "F" else 1
+                if data[field] == "NB":
+                    row[field] = 3
             elif field == "dead_or_alive":
                 row[field] = True if data[field] == "Vivo" else False
             elif field == "last_degree_of_studies":

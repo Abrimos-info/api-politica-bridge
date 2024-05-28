@@ -48,11 +48,11 @@ jobs:
         python db_create.py 1 && python application.py &
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         cd ..
-    - name: Correr unificada
+    - name: Correr pipeline de carga de bridge a api
       run: |
         cd bridge
         python pipeline.py local mexico2024.json
-    - name: Exportar datos
+    - name: Exportar datos de api a json
       run: |
         echo "Export"
         curl -s -H "Authorization: Bearer 1" http://localhost:5000/export-min/ > gob_export_min_mx.json
@@ -65,13 +65,21 @@ jobs:
         curl -s -H "Authorization: Bearer 1" http://localhost:5000/role/ > gob_role_mx.json
         curl -s -H "Authorization: Bearer 1" http://localhost:5000/person/ > gob_person_mx.json
 
+    - name: Get current date
+        id: date
+        run: |
+          echo "{date}={$(date +'%Y-%m-%d')}" >> $GITHUB_STATE
+    - uses: actions/upload-artifact@v4
+      with:
+        name: gob_json-elecciones_mx-${{date}} 
+        path: |
+          gob_*.json
+          bridge/Documentacion_API_2024.pdf
 
     - uses: actions/upload-artifact@v4
       with:
-        name: gob_mx_json 
-        path: gob_*.json
+        name: gob_csv-elecciones_mx-${{date}}
+        path: |
+          ./bridge/csv_db/*.csv
+           bridge/Documentacion_API_2024.pdf
 
-    - uses: actions/upload-artifact@v4
-      with:
-        name: gob_mx_csv 
-        path: ./bridge/csv_db/*.csv
