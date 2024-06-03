@@ -234,22 +234,22 @@ def get_contest_id(data, contest_chambers, country_location_template):
         print('Data', data) 
         sys.exit()
 
-    # if data["role_type"] == "legislatorLowerBody":
-    #     # location = f"distrito federal {data['area']} de {data['state'].lower()}"
-    #     #location = f"diputado/a por {data['state'].lower()}"
-    #     if data['state'].lower() == "bogotá":
-    #         location = f"representante a la cámara por bogotá"
-    #     else:
-    #         location = f"representante a la cámara por el departamento de {data['state'].lower()}"
-    # # Senador (4)
-    # elif data["role_type"] == "legislatorUpperBody":
-    #     # location = data["state"].lower()
-    #     if data['state'].lower() == "colombia":
-    #         location = f"senador de la república de colombia"
-    #     else:
-    #         location = f"senador de la república {data['state'].lower()}"
+    if data["role_type"] == "legislatorLowerBody":
+        # location = f"distrito federal {data['area']} de {data['state'].lower()}"
+        #location = f"diputado/a por {data['state'].lower()}"
+        if data['state'].lower() == "bogotá":
+            location = f"representante a la cámara por bogotá"
+        else:
+            location = f"representante a la cámara por el departamento de {data['state'].lower()}"
+    # Senador (4)
+    elif data["role_type"] == "legislatorUpperBody":
+        # location = data["state"].lower()
+        if data['state'].lower() == "colombia":
+            location = f"senador de la república de colombia"
+        else:
+            location = f"senador de la república {data['state'].lower()}"
 
-    # location = data['contest'].lower()
+    location = data['contest'].lower()
 
     for i, contest_chamber in enumerate(contest_chambers, start=1):
         if data["año"] == '2021' and data["country"] == 'mx':
