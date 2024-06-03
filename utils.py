@@ -749,7 +749,7 @@ def send_data(base_url, endpoint, dataset):
     """
     full_url = base_url + endpoint + '/'
     deleted = []
-    with ProgressBar(max_value=len(dataset), redirect_stdout=True) as bar:
+    with ProgressBar(max_value=len(dataset), redirect_stdout=True, min_poll_interval=5) as bar:
         for i, row in enumerate(dataset, start=1):
             try:
                 if row["is_deleted"]:

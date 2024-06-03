@@ -3,14 +3,6 @@ from utils import colors_to_list, make_banner, make_table, write_csv
 import json
 import sys 
 
-# Campaign
-#SHEET_ID = "1fKXpwXhKlLLG-kjh8udQIH9poNLs7kAzSnXndZ1Le4Y"
-#ST_RANGES = {
-#    "area": "A1:H427", "chamber": "A1:C410", "role": "A1:F410",
-#    "coalition": "A1:D49", "party": "A1:F80",
-#    "profession": "A1:B119", "contest": "A1:G426"
-#    # "past-membership": "A1:G1",
-#    }
 CSV_DB_PATH = 'csv_db_officeholders'
 
 CONFIG_FILE = sys.argv[2];

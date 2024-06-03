@@ -1,7 +1,7 @@
 # This workflow will install Python dependencies, run tests and lint with a single version of Python
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
 
-name: Build data
+name: Build data unificado
 
 on:
   push:
@@ -27,7 +27,7 @@ jobs:
         repository: abrimos-info/api-politica
         path: api
         ref: feature-unificada      
-    - name: Set up Python 3.10
+    - name: Set up Python 3.10 unificado
       uses: actions/setup-python@v3
       with:
         python-version: "3.10"
@@ -51,11 +51,38 @@ jobs:
         python db_create.py 1 && python application.py &
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         cd ..
-    - name: Correr unificada
+    - name: Correr pipeline de carga de bridge a api
       run: |
         cd bridge
-        ls -la
         python pipeline.py local unificado.json
-    - name: Exportar datos
+    - name: Exportar datos de api a json
       run: |
-        curl -H "Authorization: Bearer 1" http://localhost:5000/export-min/
+        echo "Export"
+        curl -s -H "Authorization: Bearer 1" http://localhost:5000/export-min/ > gob_export_min_unificado.json
+        curl -s -H "Authorization: Bearer 1" http://localhost:5000/area/ > gob_area_unificado.json
+        curl -s -H "Authorization: Bearer 1" http://localhost:5000/party/ > gob_party_unificado.json
+        curl -s -H "Authorization: Bearer 1" http://localhost:5000/chamber/ > gob_chamber_unificado.json
+        curl -s -H "Authorization: Bearer 1" http://localhost:5000/contest/ > gob_contest_unificado.json
+        curl -s -H "Authorization: Bearer 1" http://localhost:5000/coalition/ > gob_coalition_unificado.json
+        curl -s -H "Authorization: Bearer 1" http://localhost:5000/membership/ > gob_membership_unificado.json
+        curl -s -H "Authorization: Bearer 1" http://localhost:5000/role/ > gob_role_unificado.json
+        curl -s -H "Authorization: Bearer 1" http://localhost:5000/person/ > gob_person_unificado.json
+
+    - name: Get current date
+      run: |
+        echo "DATE={$(date +'%Y-%m-%d')}" >> $GITHUB_OUTPUT
+      id: "date"
+    - uses: actions/upload-artifact@v4
+      with:
+        name: gob_json-elecciones_unificado-${{steps.date.outputs.DATE}} 
+        path: |
+          gob_*.json
+          bridge/Documentacion_API_2024.pdf
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: gob_csv-elecciones_unificado-${{steps.date.outputs.DATE}}
+        path: |
+          ./bridge/csv_db/*.csv
+          bridge/Documentacion_API_2024.pdf
+
