@@ -223,10 +223,10 @@ def get_contest_id(data, contest_chambers, country_location_template):
     location_template = country_location_template[data["role_type"].strip()]
     location = location_template.format(
         state = data["state"].lower(), 
-        area = data["area"].lower() if data["area"] else "-1" #algunas persons no tienen area
+        area = data["area"].lower() if data["area"] else -1
     )
 
-    print('Data', data) 
+    # print('Data', data) 
     if not location: 
         print('location1', location)
         print('location3', location_template)
@@ -234,22 +234,26 @@ def get_contest_id(data, contest_chambers, country_location_template):
         print('Data', data) 
         sys.exit()
 
-    if data["role_type"] == "legislatorLowerBody":
-        # location = f"distrito federal {data['area']} de {data['state'].lower()}"
-        #location = f"diputado/a por {data['state'].lower()}"
-        if data['state'].lower() == "bogotá":
-            location = f"representante a la cámara por bogotá"
-        else:
-            location = f"representante a la cámara por el departamento de {data['state'].lower()}"
-    # Senador (4)
-    elif data["role_type"] == "legislatorUpperBody":
-        # location = data["state"].lower()
-        if data['state'].lower() == "colombia":
-            location = f"senador de la república de colombia"
-        else:
-            location = f"senador de la república {data['state'].lower()}"
+    if data["country"] == "co":
+        if data["role_type"] == "legislatorLowerBody":
+            if data['state'].lower() == "bogotá":
+                location = "representante a la cámara por bogotá"
+            else:
+                location = f"representante a la cámara por el departamento de {data['state'].lower()}"
+        elif data["role_type"] == "legislatorUpperBody":
+            if data['state'].lower() == "colombia":
+                location = "senador de la república de colombia"
+            else:
+                location = f"senador de la república {data['state'].lower()}"
 
-    location = data['contest'].lower()
+    if data["country"] != 'ar':
+        location = data['contest'].lower()
+
+    # if data["country"] == 'ar' and data["role_type"] == "executiveCouncil" and data["area"] == "":
+    #     location = f"intendente/a de {data["state"].lower()} pcia de {data["state"].lower()}"
+
+    if location == "presidencia de la república mexicana":
+        location = "presidencia de méxico"
 
     for i, contest_chamber in enumerate(contest_chambers, start=1):
         if data["año"] == '2021' and data["country"] == 'mx':
@@ -257,11 +261,13 @@ def get_contest_id(data, contest_chambers, country_location_template):
                 return i
         if location == contest_chamber:
             return i
-        if location != contest_chamber and not location in contest_chamber:
-            print('location', location)
-            print('contest_chamber', contest_chamber)
-            sys.exit()
     
+    if location != contest_chamber and not location in contest_chamber:
+        print('data',data)
+        print('location', location)
+        print('contest_chamber', contest_chambers)
+        sys.exit()
+
     print("get_contest_id: " + "person_id: " + str(data["person_id"]) + " role_type: " + str(data["role_type"]) + " location: " + str(location) + " pais: " + str(data["country"]))
     #print("role_type_es: " + str(Catalogues.SPANISH_ROLES[data["role_type"]]))
     # print("contest_chamber: " + str(contest_chambers))
@@ -404,7 +410,7 @@ def make_other_names_struct(dataset):
     return result
 
 
-def make_person_profession(dataset, professions):
+def make_person_profession(dataset, professions_dict):
     """**Makes person-profession data**
 
     This function makes a valid list of person-profession data for the API from capture GSheet
@@ -421,6 +427,7 @@ def make_person_profession(dataset, professions):
     pattern = r'^profession_[2-6]$'
     person_profession_id = 0
     for i, data in enumerate(dataset, start=1):
+        professions = professions_dict.get(data["country"])
         for field in data:
             if re.search(pattern, field):
                 profession = data[field].lower()
@@ -435,9 +442,10 @@ def make_person_profession(dataset, professions):
                             "profession_id": profession_id
                         })
                     except Exception:
+                        print(professions)
                         print("make_person_profession error", i, "profession not found", profession)
+                        sys.exit()
     return lines
-
 
 def make_membership(dataset, parties_dict, coalitions_dict, contest_chambers_dict, header, roles_dict, location_template_dict):
     """**Makes membership data**

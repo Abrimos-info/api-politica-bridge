@@ -97,6 +97,8 @@ def read_country_tables(country):
         del profession["profession_id"]
     professions_catalogue[country] = sheet_reader(SHEET_ID, f"Catalogue profession!B2:B{get_end_range(ST_RANGES['profession'])}",
                                         as_list=True)
+    # print(professions_catalogue[country])
+    # sys.exit()
     # URL types Catalogue
     url_types[country] = sheet_reader(SHEET_ID, f"Catalogue url_types!{ST_RANGES['url_types']}", as_list=True)
 

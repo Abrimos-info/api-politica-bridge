@@ -18,7 +18,6 @@
         },
         "co": {
             "SHEET_ID": "1W8F9cf88hRXPEeLQEVbXHtQ2K6BnoXRD9vRDWL3Qpeg",
-            "x_SHEET_ID_2022": "1H9I_fhpQWMPn5wgRvdBrnmoZ9WpgTIwJnKfda6LEycY",
              "ST_RANGES": {
                "area": "A1:J111",
                "chamber": "A1:C111",
@@ -35,7 +34,6 @@
         ,
         "ar": {
             "SHEET_ID": "1TvKbHLz6AJPUlEHP9WD_w7_mqQQv8pN4Y9Z7ZF0cq1I",
-            "x_SHEET_ID_2022": "1H9I_fhpQWMPn5wgRvdBrnmoZ9WpgTIwJnKfda6LEycY",
             "ST_RANGES": {
               "area": "A1:J109",
               "chamber": "A1:C109",
