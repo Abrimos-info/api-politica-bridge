@@ -597,7 +597,8 @@ def get_dummy_data(endpoint):
             "contest_id": -1,
             "person_id": -1,
             "profession_1": '',
-            "replaced_person_id": None
+            "replaced_person_id": None,
+            "is_elected_2024": False
         }
     elif endpoint == "other-name":
         dummy_data = {
@@ -742,7 +743,7 @@ def send_data(base_url, endpoint, dataset):
                 r = requests.post(full_url, json=row, headers=HEADERS)
                 if r.status_code != 201:
                     print(f"[ERROR]: {endpoint} #{i} status code: {r.status_code}")
-                    print(f"msg: {r.json()['message']}")
+                    print(f"msg: {r.json()['message']} | data:{row}")
             except r_excepts.ConnectionError:
                 print("[CONNECTION ERROR]")
                 print(f"#{i} | url: {full_url} | data:{row}")
