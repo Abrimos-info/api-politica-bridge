@@ -493,12 +493,13 @@ def make_membership(dataset, parties_dict, abbreviations_dict, coalitions_dict, 
             contest_id = get_contest_id(data, contest_chambers, location_template)
             role_id = get_role_id(roles, contest_id)
             if data["country"] == "ar":
-                if data["party"].lower() in parties:
-                    party = parties.index(data["party"].lower()) + 1
-                else:
-                    fixedParty = data["party"].replace("LOS ","")
-                    print("fixedParty",fixedParty)
-                    party = parties.index(fixedParty.lower()) + 1
+                    party_name = data["party"].lower()
+
+                    if "y de trabajadores" in party_name:
+                            party_name = party_name.replace("y de trabajadores","y de los trabajadores")
+                            
+                    if party_name in parties:
+                        party = parties.index(party_name) + 1
 
             else: 
                 party = abbreviations.index(data["abbreviation"].lower()) + 1
@@ -522,11 +523,11 @@ def make_membership(dataset, parties_dict, abbreviations_dict, coalitions_dict, 
                 "date_changed_from_substitute": "0001-01-01"  # TODO:
             })
         except ValueError:
-            print("make_membership parties error in line", i, "'",data["country"],data["abbreviation"].lower(),data["party"].lower(), "'","not found")
-            #print("parties",parties)
-            #print("abbreviations",abbreviations)
-            #print(data)
-            # sys.exit()
+            print("make_membership parties error in line", i, "'", "country: ", data["country"], "abbreviation:", data["abbreviation"].lower(), "party:", data["party"].lower(), "'","not found")
+            # print("parties",parties)
+            print("abbreviations",abbreviations)
+            print(data)
+            sys.exit()
 
     return lines
 
