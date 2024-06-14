@@ -447,7 +447,7 @@ def make_person_profession(dataset, professions_dict):
                         sys.exit()
     return lines
 
-def make_membership(dataset, parties_dict, coalitions_dict, contest_chambers_dict, header, roles_dict, location_template_dict):
+def make_membership(dataset, parties_dict, abbreviations_dict, coalitions_dict, contest_chambers_dict, header, roles_dict, location_template_dict):
     """**Makes membership data**
 
     This functions makes a valid list of membership data for the API
@@ -456,6 +456,8 @@ def make_membership(dataset, parties_dict, coalitions_dict, contest_chambers_dic
     :type dataset: list
     :param parties: Party list from static table "party"
     :type parties: list
+    :param abbreviations_dict: Abbreviations list from static table "party"
+    :type abbreviations_dict: dict
     :param coalitions: Coalition list from static table "coalition"
     :type coalitions: list
     :param contest_chambers: constest-chamber list from static table "contest"
@@ -475,26 +477,39 @@ def make_membership(dataset, parties_dict, coalitions_dict, contest_chambers_dic
         contest_chambers = contest_chambers_dict.get(data["country"])
         location_template = location_template_dict.get(data["country"])
         parties = parties_dict.get(data["country"])
+        abbreviations = abbreviations_dict.get(data["country"])
         roles = roles_dict.get(data["country"])
 
         try:
-            if data["coalition"]:
+            if data["coalition"] and data["coalition"] != "__":
                 coalition_id = coalitions.index(data["coalition"].lower().strip()) + 1
             else:
                 coalition_id = -1
         except ValueError:
             print("make_membership coalitions error in line", i, "'",data["coalition"].lower().strip(), "'","not found")
+            print(coalitions)
 
         try:
             contest_id = get_contest_id(data, contest_chambers, location_template)
             role_id = get_role_id(roles, contest_id)
+            if data["country"] == "ar":
+                if data["party"].lower() in parties:
+                    party = parties.index(data["party"].lower()) + 1
+                else:
+                    fixedParty = data["party"].replace("LOS ","")
+                    print("fixedParty",fixedParty)
+                    party = parties.index(fixedParty.lower()) + 1
+
+            else: 
+                party = abbreviations.index(data["abbreviation"].lower()) + 1
+
             lines.append({
                 "is_deleted": data["is_deleted"],
                 "membership_id": i,
                 "person_id": data["person_id"],
                 # TODO: By now contest_id == role_id. Change soon
                 "role_id": role_id,
-                "party_id": parties.index(data["abbreviation"].lower()) + 1,
+                "party_id": party,
                 "coalition_id": coalition_id,
                 "contest_id": contest_id,
                 "goes_for_coalition": True if data["coalition"] else False,
@@ -507,7 +522,11 @@ def make_membership(dataset, parties_dict, coalitions_dict, contest_chambers_dic
                 "date_changed_from_substitute": "0001-01-01"  # TODO:
             })
         except ValueError:
-            print("make_membership parties error in line", i, "'",data["abbreviation"].lower(), "'","not found")
+            print("make_membership parties error in line", i, "'",data["country"],data["abbreviation"].lower(),data["party"].lower(), "'","not found")
+            #print("parties",parties)
+            #print("abbreviations",abbreviations)
+            #print(data)
+            # sys.exit()
 
     return lines
 

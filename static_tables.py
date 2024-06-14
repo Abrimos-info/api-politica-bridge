@@ -74,7 +74,10 @@ def read_country_tables(country):
         if party["party_id"] == "":
             party["is_deleted"] = True
         del party["party_id"]
-    parties[country] = sheet_reader(SHEET_ID, f"Table party!C2:C{get_end_range(ST_RANGES['party'])}", as_list=True)
+    
+
+    abbreviations[country] = sheet_reader(SHEET_ID, f"Table party!C2:C{get_end_range(ST_RANGES['party'])}", as_list=True)
+    parties[country] = sheet_reader(SHEET_ID, f"Table party!B2:C{get_end_range(ST_RANGES['party'])}", as_list=True)
 
     # CONTEST
     contest_data[country] = sheet_reader(SHEET_ID, f"Table contest!{ST_RANGES['contest']}")
@@ -115,6 +118,7 @@ chamber_catalogue = {}
 role_catalogue = {}
 coalitions_catalogue = {}
 parties = {}
+abbreviations = {}
 professions_catalogue = {}
 contest_chambers= {}
 url_types = {}

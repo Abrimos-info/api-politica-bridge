@@ -2,7 +2,7 @@ import sys
 from datetime import datetime
 from sheets import sheet_reader
 from static_tables import (area_data, chamber_data, role_data, coalition_data,
-                           coalitions_catalogue, party_data, parties,
+                           coalitions_catalogue, party_data, abbreviations, parties,
                            contest_data, contest_chambers, profession_data,
                            professions_catalogue, url_types)
 from utils import (make_banner, verification_process,
@@ -128,7 +128,7 @@ def main():
                         "start_date", "end_date", "is_substitute",
                         "parent_membership_id", "changed_from_substitute",
                         "date_changed_from_substitute"]
-    membership_data = make_membership(dataset, parties, coalitions_catalogue,
+    membership_data = make_membership(dataset, parties, abbreviations, coalitions_catalogue,
                                     contest_chambers, membership_header, role_data, location_template)
     membership_table = make_table(membership_header, membership_data)
     write_csv(membership_table, f"{CSV_DB_PATH}/membership")
