@@ -70,7 +70,8 @@
             "legislatorUpperBody": "senaduría de {state}",
             "regionalLegislator": "distrito local {area} {state}",
             "executiveCouncil": "{area}",
-            "headOfGovernment": "presidencia de {state}"
+            "headOfGovernment": "presidencia de {state}",
+            "deputyHeadOfGovernment": "presidencia de {state}"
         },
         "ar": {
             "governmentOfficer": "gobernador/a de {state}",

@@ -265,7 +265,7 @@ def get_contest_id(data, contest_chambers, country_location_template):
     if location != contest_chamber and not location in contest_chamber:
         print('data',data)
         print('location', location)
-        print('contest_chamber', contest_chambers)
+        # print('contest_chamber', contest_chambers)
         sys.exit()
 
     print("get_contest_id: " + "person_id: " + str(data["person_id"]) + " role_type: " + str(data["role_type"]) + " location: " + str(location) + " pais: " + str(data["country"]))
