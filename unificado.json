@@ -19,7 +19,7 @@
         "co": {
             "SHEET_ID": "1gpYlU14JUP8pnfP2yuFNATfbzb3hm9ZYYHTwX3y-cT4",
              "ST_RANGES": {
-               "area": "A1:J111",
+               "area": "A1:H111",
                "chamber": "A1:C111",
                "role": "A1:F111",
                "contest": "A1:G111",
@@ -33,7 +33,7 @@
         }
         ,
         "ar": {
-            "SHEET_ID": "1TvKbHLz6AJPUlEHP9WD_w7_mqQQv8pN4Y9Z7ZF0cq1I",
+            "SHEET_ID": "1tm-XWO7Vgrw7Jrr0pJWUMVK4eSDtSBChCFXq1gJwLrY",
             "ST_RANGES": {
               "area": "A1:J109",
               "chamber": "A1:C109",

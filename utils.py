@@ -820,6 +820,7 @@ def send_data(base_url, endpoint, dataset):
                 if r.status_code != 201:
                     print(f"[ERROR]: {endpoint} #{i} status code: {r.status_code}")
                     print(f"msg: {r.json()['message']}")
+                    print(f"#{i} | url: {full_url} | data:{row}")
             except r_excepts.ConnectionError:
                 print("[CONNECTION ERROR]")
                 print(f"#{i} | url: {full_url} | data:{row}")

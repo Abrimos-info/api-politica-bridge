@@ -183,9 +183,9 @@ def main():
         print("\t * PROFESSION "+country)
         send_data(API_BASE, 'profession', profession_data[country])
 
-    send_country_data("mx")
     send_country_data("ar")
     send_country_data("co")
+    send_country_data("mx")
 
     # PERSON (dynamic)
     print("\t * PERSON")
