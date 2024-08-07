@@ -73,7 +73,7 @@ def read_country_tables(country):
     for party in party_data[country]:
         if party["party_id"] == "":
             party["is_deleted"] = True
-        del party["party_id"]
+        # del party["party_id"]
     
 
     abbreviations[country] = sheet_reader(SHEET_ID, f"Table party!C2:C{get_end_range(ST_RANGES['party'])}", as_list=True)
