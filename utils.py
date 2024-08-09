@@ -787,27 +787,31 @@ def send_data(base_url, endpoint, dataset):
                         oi = i;
                         i = 900000+i
                         dummy_data["person_id"] = i
+                    if endpoint == "party":
+                        oi = i;
+                        i = 900000+i
+                        dummy_data["party_id"] = i
                     r = requests.post(full_url, json=dummy_data, headers=HEADERS)
                     post_status = r.status_code
                     if post_status != 201:
                         print(f"#{i} POST: {post_status} CREATE: {post_status}")
                         print("i",i)
-                        print("created dummy",r.json());
+                        print("created dummy 1",r.json());
                         print("row",row)
                     r2 = requests.delete(f"{full_url}{i}", headers=HEADERS)
                     delete_status = r2.status_code
                     if delete_status != 200:
                         print(f"#{i} POST: {post_status} DELETE: {delete_status}")
                         print("i",i)
-                        print("created dummy",r.json());
+                        print("can't delete dummy, reason:",r.json());
                         print("row",row)
                     if endpoint == "person":
                         print(f"#{i} POST: {post_status} DELETE: {delete_status}")
                         print("i",i)
-                        print("created dummy",r.json());
+                        print("created dummy 3",r.json());
                         print("row",row)
                     deleted.append(row)
-                    if endpoint == "person":
+                    if endpoint == "person" or endpoint == "party":
                             i = oi
                     continue
                 else:
