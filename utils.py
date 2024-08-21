@@ -796,7 +796,7 @@ def send_data(base_url, endpoint, dataset):
                     if post_status != 201:
                         print(f"#{i} POST: {post_status} CREATE: {post_status}")
                         print("i",i)
-                        print("created dummy 1",r.json());
+                        print("created dummy 1",r);
                         print("row",row)
                     r2 = requests.delete(f"{full_url}{i}", headers=HEADERS)
                     delete_status = r2.status_code

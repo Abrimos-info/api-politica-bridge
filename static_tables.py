@@ -35,6 +35,8 @@ def read_country_tables(country):
         
         del area["area_id"]
 
+        area["country"] = country
+
     # CHAMBER
     chamber_data[country] = sheet_reader(SHEET_ID, f"Table chamber!{ST_RANGES['chamber']}")
     chamber_header = chamber_data[country][0].keys()
@@ -43,6 +45,7 @@ def read_country_tables(country):
         if chamber["chamber_id"] == "":
             chamber["is_deleted"] = True
         del chamber["chamber_id"]
+        chamber["country"] = country
 
     # ROLE
     role_data[country] = sheet_reader(SHEET_ID, f"Table role!{ST_RANGES['role']}")
@@ -52,6 +55,7 @@ def read_country_tables(country):
         if role["role_id"] == "":
             role["is_deleted"] = True
         del role["role_id"]
+        role["country"] = country
 
     # COALITION
     coalition_data[country] = sheet_reader(SHEET_ID,
@@ -62,6 +66,8 @@ def read_country_tables(country):
     coalition_data[country] = colors_to_list(coalition_data[country])
     for coalition in coalition_data[country]:
         del coalition["coalition_id"]
+        coalition["country"] = country
+
     coalitions_catalogue[country] = sheet_reader(SHEET_ID, f"Table coalition!B2:B{get_end_range(ST_RANGES['coalition'])}",
                                         as_list=True)
 
@@ -73,6 +79,9 @@ def read_country_tables(country):
     for party in party_data[country]:
         if party["party_id"] == "":
             party["is_deleted"] = True
+        party["country"] = country
+        party["party_id"] = country+"-"+party["party_id"]
+
         # del party["party_id"]
     
 
@@ -87,6 +96,8 @@ def read_country_tables(country):
         if contest["contest_id"] == "":
             contest["is_deleted"] = True
         del contest["contest_id"]
+        contest["country"] = country
+
 
     contest_chambers[country] = sheet_reader(SHEET_ID, f"Table contest!C2:G{get_end_range(ST_RANGES['contest'])}",
                                     as_list=True)
@@ -98,6 +109,8 @@ def read_country_tables(country):
             f"{CSV_DB_PATH}/profession")
     for profession in profession_data[country]:
         del profession["profession_id"]
+        profession["country"] = country
+
     professions_catalogue[country] = sheet_reader(SHEET_ID, f"Catalogue profession!B2:B{get_end_range(ST_RANGES['profession'])}",
                                         as_list=True)
     # print(professions_catalogue[country])
