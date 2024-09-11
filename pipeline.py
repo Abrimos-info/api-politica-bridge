@@ -76,6 +76,11 @@ def main():
 
     for data in dataset:
         empty_person_id = not data["person_id"]
+
+        #Add country to person_id in all countries except mexico
+        if data["country"] != "mx":
+            data["person_id"] = data["country"] + "-"+ data["person_id"]
+        
         is_not_officerholder = data["membership_type"] != "officeholder"
         if DB_TYPE == "local":
             data["is_deleted"] = empty_person_id

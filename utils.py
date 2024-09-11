@@ -366,6 +366,7 @@ def make_person_struct(dataset, contest_chambers, header, location_template):
                 else:
                     row[field] = -1
             elif field == "contest_id":
+                # print(row)
                 row[field] = get_contest_id(data, contest_chambers[row["country"]], location_template[row["country"]])
             elif field == "date_birth":
                 if data[field]:
@@ -405,7 +406,8 @@ def make_other_names_struct(dataset):
                 "is_deleted": data["is_deleted"],
                 "other_name_type": 2, # TODO
                 "name": data["nickname"],
-                "person_id": data["person_id"]
+                "person_id": data["person_id"],
+                "country": data["country"]
             })
     return result
 
@@ -439,7 +441,8 @@ def make_person_profession(dataset, professions_dict):
                             "person_profession_id": person_profession_id,
                             "is_deleted": data["is_deleted"],
                             "person_id": data["person_id"],
-                            "profession_id": profession_id
+                            "profession_id": profession_id,
+                            "country": data["country"]
                         })
                     except Exception:
                         print(professions)
@@ -520,7 +523,8 @@ def make_membership(dataset, parties_dict, abbreviations_dict, coalitions_dict, 
                 "is_substitute": True if data["is_substitute"] == "Sí" else False,
                 "parent_membership_id": i if data["is_substitute"] == "Sí" else -1,
                 "changed_from_substitute": False,  # TODO:
-                "date_changed_from_substitute": "0001-01-01"  # TODO:
+                "date_changed_from_substitute": "0001-01-01",  # TODO:
+                "country": data["country"]
             })
         except ValueError:
             print("make_membership parties error in line", i, "'", "country: ", data["country"], "abbreviation:", data["abbreviation"].lower(), "party:", data["party"].lower(), "'","not found")
@@ -628,6 +632,7 @@ def make_url_struct(dataset, url_types, url_id_counter, coalitions=[],
                                 "description": "",
                                 "owner_type": 3 if owner_type == "coalition" else 2,
                                 "owner_id": owner_id
+                                "country": data["country"]
                             })
     # Person or membership
     else:
@@ -730,7 +735,8 @@ def get_dummy_data(endpoint):
             "city": "",
             "district_type": -1,
             "parent_area_id": "",
-            "cvedis": ""
+            "cvedis": "",
+            "area_id": "-1"
         }
     elif endpoint == "role":
         dummy_data = {
@@ -739,6 +745,7 @@ def get_dummy_data(endpoint):
             "area_id": -1,
             "chamber_id": -1,
             "contest_id": -1,
+            "role_id": "-1"
         }
     elif endpoint == "party":
         dummy_data = {
@@ -747,6 +754,7 @@ def get_dummy_data(endpoint):
             "area_id": -1,
             "colors": [],
             "coalition_id": -1,
+            "party_id": "-1"
         }
     elif endpoint == "contest":
         dummy_data = {
@@ -755,12 +763,14 @@ def get_dummy_data(endpoint):
             "membership_id_winner": -1,
             "start_date": "0001-01-01",
             "end_date": "0001-01-01",
-            "election_identifier": ""
+            "election_identifier": "",
+            "contest_id": "-1"
         }
     elif endpoint == "chamber":
         dummy_data = {
             "area_id": -1,
-            "name": ""
+            "name": "",
+            "chamber_id": "-1"
         }
     return dummy_data
 
@@ -781,6 +791,7 @@ def send_data(base_url, endpoint, dataset):
         for i, row in enumerate(dataset, start=1):
             try:
                 if row["is_deleted"]:
+                    continue
                     dummy_data = get_dummy_data(endpoint)
                     oi = 0;
                     if endpoint == "person":

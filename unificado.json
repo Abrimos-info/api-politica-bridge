@@ -1,6 +1,54 @@
 {
     "country:": "Unificado",
-    "sheets": {
+    "sheets_corto": {
+        "mx": {
+            "SHEET_ID": "1gvdXYgsmkQ5jckBTraHc3iULIXzI1FlmTBqwe1t08BA",
+            "ST_RANGES": {
+                "area": "A1:J11", 
+                "chamber": "A1:C11",
+                "role": "A1:F11",
+                "contest": "A1:G11",
+                "coalition": "A1:D12",
+                "party": "A1:F93",
+                "profession": "A1:B122",
+                "url_types": "B2:B23",
+                "COALITION_URL_RANGE": "URL_logo_partido_coal!A1:H37",
+                "PARTY_URL_RANGE": "URL_logo_partido_coal!I1:R62"
+            }
+        },
+        "co": {
+            "SHEET_ID": "1gpYlU14JUP8pnfP2yuFNATfbzb3hm9ZYYHTwX3y-cT4",
+             "ST_RANGES": {
+               "area": "A1:H11",
+               "chamber": "A1:C11",
+               "role": "A1:F11",
+               "contest": "A1:G11",
+               "coalition": "A1:D68",
+               "party": "A1:F30",
+               "profession": "A1:B11",
+               "url_types": "B2:B23",
+               "COALITION_URL_RANGE": "URL_logo_partido_coal!A1:H86",
+               "PARTY_URL_RANGE": "URL_logo_partido_coal!J1:S289"
+             }
+        }
+        ,
+        "ar": {
+            "SHEET_ID": "1tm-XWO7Vgrw7Jrr0pJWUMVK4eSDtSBChCFXq1gJwLrY",
+            "ST_RANGES": {
+              "area": "A1:J10",
+              "chamber": "A1:C10",
+              "role": "A1:F10",
+              "coalition": "A1:D7",
+              "party": "A1:F209",
+              "profession": "A1:B86",
+              "contest": "A1:G10",
+              "url_types": "B2:B23",
+              "COALITION_URL_RANGE": "URL_logo_partido_coal!A1:H1",
+              "PARTY_URL_RANGE": "URL_logo_partido_coal!I1:R93"
+            }
+        }      
+     },
+     "sheets": {
         "mx": {
             "SHEET_ID": "1gvdXYgsmkQ5jckBTraHc3iULIXzI1FlmTBqwe1t08BA",
             "ST_RANGES": {
@@ -47,8 +95,9 @@
               "PARTY_URL_RANGE": "URL_logo_partido_coal!I1:R93"
             }
         }      
-     },
+     },     
     "CAPTURE_SHEET_ID": "1wmZ0PfnjNWwG5J6iWrUg7RXAgFPF_K0fmbpGC1y4p60",
+    "READ_RANGE_corto": "Unificado!A1:AL15",
     "READ_RANGE": "Unificado!A1:AL15000",
     "person_header": [
         "country",

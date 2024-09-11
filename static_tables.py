@@ -33,9 +33,11 @@ def read_country_tables(country):
         if area["area_id"] == "":
             area["is_deleted"] = True
         
-        del area["area_id"]
+        # del area["area_id"]
 
         area["country"] = country
+        area["area_id"] = country+"-"+area["area_id"]
+
 
     # CHAMBER
     chamber_data[country] = sheet_reader(SHEET_ID, f"Table chamber!{ST_RANGES['chamber']}")
@@ -44,8 +46,10 @@ def read_country_tables(country):
     for chamber in chamber_data[country]:
         if chamber["chamber_id"] == "":
             chamber["is_deleted"] = True
-        del chamber["chamber_id"]
+        # del chamber["chamber_id"]
         chamber["country"] = country
+        chamber["chamber_id"] = country+"-"+chamber["chamber_id"]
+
 
     # ROLE
     role_data[country] = sheet_reader(SHEET_ID, f"Table role!{ST_RANGES['role']}")
@@ -54,8 +58,9 @@ def read_country_tables(country):
     for role in role_data[country]:
         if role["role_id"] == "":
             role["is_deleted"] = True
-        del role["role_id"]
+        # del role["role_id"]
         role["country"] = country
+        role["role_id"] = country+"-"+role["role_id"]
 
     # COALITION
     coalition_data[country] = sheet_reader(SHEET_ID,
@@ -65,8 +70,9 @@ def read_country_tables(country):
             f"{CSV_DB_PATH}/coalition")
     coalition_data[country] = colors_to_list(coalition_data[country])
     for coalition in coalition_data[country]:
-        del coalition["coalition_id"]
+        # del coalition["coalition_id"]
         coalition["country"] = country
+        coalition["coalition_id"] = country+"-"+coalition["coalition_id"]
 
     coalitions_catalogue[country] = sheet_reader(SHEET_ID, f"Table coalition!B2:B{get_end_range(ST_RANGES['coalition'])}",
                                         as_list=True)
@@ -95,8 +101,9 @@ def read_country_tables(country):
     for contest in contest_data[country]:
         if contest["contest_id"] == "":
             contest["is_deleted"] = True
-        del contest["contest_id"]
+        # del contest["contest_id"]
         contest["country"] = country
+        contest["contest_id"] = country+"-"+contest["contest_id"]
 
 
     contest_chambers[country] = sheet_reader(SHEET_ID, f"Table contest!C2:G{get_end_range(ST_RANGES['contest'])}",
@@ -108,8 +115,9 @@ def read_country_tables(country):
     write_csv(make_table(profession_header, profession_data[country]),
             f"{CSV_DB_PATH}/profession")
     for profession in profession_data[country]:
-        del profession["profession_id"]
+        # del profession["profession_id"]
         profession["country"] = country
+        profession["profession_id"] = country+"-"+profession["profession_id"]
 
     professions_catalogue[country] = sheet_reader(SHEET_ID, f"Catalogue profession!B2:B{get_end_range(ST_RANGES['profession'])}",
                                         as_list=True)
