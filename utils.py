@@ -631,7 +631,7 @@ def make_url_struct(dataset, url_types, url_id_counter, coalitions=[],
                                 "url_type": get_url_type_id(field, url_types[data["country"]]),
                                 "description": "",
                                 "owner_type": 3 if owner_type == "coalition" else 2,
-                                "owner_id": owner_id
+                                "owner_id": owner_id,
                                 "country": data["country"]
                             })
     # Person or membership
